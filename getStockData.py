@@ -14,7 +14,7 @@ class getStockList:
 
     def getJsonparsedData(url):
         """
-        Receive the content of ``url``, parse it as JSON and return the object.
+        Receive the content of "url", parse it as JSON and return the object.
 
         Parameters
         ----------
@@ -25,11 +25,11 @@ class getStockList:
         dict
         """
         response = urlopen(url)
-        data = response.read().decode("utf-8")
+        data = response.read().decode('utf-8')
         return json.loads(data)
 
     def mostGainerStock(self):
-        url = ("https://financialmodelingprep.com/api/v3/stock/gainers?apikey=%s" %
+        url = ('https://financialmodelingprep.com/api/v3/stock/gainers?apikey=%s' %
                (config.FMP_API))
         parsedData = (getStockList.getJsonparsedData(url))
         mostGainerData = parsedData['mostGainerStock']
@@ -37,9 +37,9 @@ class getStockList:
         topFiveList = []
         for i in mostGainerData:
             while counter != 5:
-                topFiveList.append(str(counter+1) + ". " + mostGainerData[counter]['ticker'] + " $" + mostGainerData[counter]['price'] + " " +
+                topFiveList.append(str(counter+1) + '. ' + mostGainerData[counter]['ticker'] + ' $' + mostGainerData[counter]['price'] + ' ' +
                                    mostGainerData[counter]['changesPercentage'])
                 counter += 1
 
-        # print("\n".join(topFiveList))
+        # print('\n'.join(topFiveList))
         return topFiveList

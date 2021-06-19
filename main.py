@@ -1,17 +1,19 @@
 import discord
+from discord.ext import commands
 import config
 import getStockData
 
-client = discord.Client()
+client = commands.Bot(command_prefix=config.PREFIX)
 stockData = getStockData.getStockList()
-topFiveStockList = stockData.mostGainerStock()
 
 
 @client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith("!stock"):
-        await message.channel.send("Top 5 Gainer Stocks Today: \n" + "\n".join(topFiveStockList))
+async def on_ready():
+    print('Bot is online.')
+
+
+@client.command()
+async def stock(message):
+    await message.send("Top 5 Gainer Stocks Today: \n" + "\n".join(stockData.mostGainerStock()))
 
 client.run(config.BOT_TOKEN)
