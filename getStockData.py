@@ -36,9 +36,9 @@ class getStockList:
         counter = 0
         topFiveList = []
         for i in mostGainerData:
-            while counter != 5:
+            while counter != 5:  # Limit to only top 5
                 topFiveList.append(str(counter+1) + '. ' + mostGainerData[counter]['ticker'] + ' $' + mostGainerData[counter]['price'] + ' ' +
-                                   mostGainerData[counter]['changesPercentage'])
+                                   mostGainerData[counter]['changesPercentage'])    # Store ticker, price, and %change of stock
                 counter += 1
 
         # print('\n'.join(topFiveList))
