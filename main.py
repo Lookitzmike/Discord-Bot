@@ -21,8 +21,14 @@ async def change_status():
 
 
 @client.command()
-async def stock(message):
-    await message.send("Top 5 Gainer Stocks Today: \n" + "\n".join(stockData.mostGainerStock()))
+async def stock(context):
+    channel = context.message.channel
+    embeddedMessage = discord.Embed(
+        title='Top 5 Gainer Stocks Today: \n',
+        description="\n".join(stockData.mostGainerStock()),
+        colour=discord.Colour.blue()
+    )
+    await context.send(embed=embeddedMessage)
 
 
 @client.command()
@@ -30,13 +36,13 @@ async def clear(message, amount=1):  # Clear messages amount default 1
     await message.channel.purge(limit=amount)
 
 
-@client.command(pass_context=True)
+@client.command()
 async def stockgraph(context):
     channel = context.message.channel
     embeddedMessage = discord.Embed(
-        title='Title',
-        description='Description here',
-        colour=discord.Colour.red()
+        title='Title',  # Ticker
+        description='Description here',  # Price and % change
+        colour=discord.Colour.green()
     )
     embeddedMessage.set_image(
         url='http://theconcordian.com/wp-content/uploads/2021/03/dogecoin-taylor.png')
