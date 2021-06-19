@@ -25,7 +25,7 @@ async def stock(context):
     channel = context.message.channel
     embeddedMessage = discord.Embed(
         title='Top 5 Gainer Stocks Today: \n',
-        description="\n".join(stockData.mostGainerStock()),
+        description="\n".join(stockData.printGainerStock()),
         colour=discord.Colour.blue()
     )
     await context.send(embed=embeddedMessage)
@@ -34,6 +34,17 @@ async def stock(context):
 @client.command()
 async def clear(message, amount=1):  # Clear messages amount default 1
     await message.channel.purge(limit=amount)
+
+
+@client.command()
+async def topticker(context):
+    channel = context.message.channel
+    embeddedMessage = discord.Embed(
+        title='Top 5 Gainer Stocks Ticker: \n',
+        description=stockData.historicStockData(),
+        colour=discord.Colour.green()
+    )
+    await context.send(embed=embeddedMessage)
 
 
 @client.command()
