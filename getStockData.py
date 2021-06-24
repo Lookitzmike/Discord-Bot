@@ -61,11 +61,12 @@ class getStockList:
 
     # Get historic data of each ticker from top 5 gainer stocks
     def historicStockData(self):
+        url_P1 = ("https://financialmodelingprep.com/api/v3/historical-price-full/")
+        url_P2 = ("?apikey=%s" % (config.FMP_API_HISTORIC_DATA))
         tickerList = getStockList.getGainerTicker()
-        # topFiveTickerList = []
-        # for i in tickerList:
-        #     url = ("https://financialmodelingprep.com/api/v3/historical-price-full/%s?apikey=%s" %
-        #            (tickerList, config.FMP_API_HISTORIC_DATA))
-        #     parsedHistoricalData = (getStockList.getJsonparsedData(url))
-        #     topFiveTickerList.append(parsedHistoricalData['symbol'])
+        topFiveTickerList = []
+        for i in range(len(tickerList)):
+            url = url_P1+tickerList[i]+url_P2
+            parsedHistoricalData = (getStockList.getJsonparsedData(url))
+            topFiveTickerList.append(parsedHistoricalData['symbol'])
         return tickerList
