@@ -9,6 +9,7 @@ except ImportError:
 import json
 import os
 import sys
+counter = 0
 
 
 def getJsonparsedData(url):
@@ -53,12 +54,15 @@ def historicStockData():
     url_P2 = ("?apikey=%s" % (config.FMP_API_HISTORIC_DATA))
     topFiveTickerList = ['ENTX', 'BEST']
     dateList = []
+    global counter
     for i in range(len(topFiveTickerList)):
-        url = url_P1+topFiveTickerList[i]+url_P2
-        print(url)
-        parsedHistoricalData = getJsonparsedData(url)
-        dateList.append(parsedHistoricalData['historical'][0]['date'] + " Open price: " + str(
-            parsedHistoricalData['historical'][0]['open']))
+        while counter != len(topFiveTickerList):
+            url = url_P1+topFiveTickerList[counter]+url_P2
+            print(url, counter)
+            parsedHistoricalData = getJsonparsedData(url)
+            dateList.append(parsedHistoricalData['symbol'] + " " + parsedHistoricalData['historical'][0]['date'] + " Close price: " + str(
+                parsedHistoricalData['historical'][0]['close']))
+            counter += 1
         # dateData = parsedHistoricalData['historical'][0]['date']
         # openData = str(parsedHistoricalData['historical'][0]['open'])
         # dateList.append(dateData)
