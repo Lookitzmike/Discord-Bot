@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+import config
+import os
+import sys
+import cProfile
+import pstats
+
 
 try:
     # For Python 3.0 and later
@@ -8,24 +14,43 @@ except ImportError:
     from urllib2 import urlopen
 
 import json
+from time import perf_counter
+
+count = 0
 
 
-def get_jsonparsed_data(url):
-    """
-    Receive the content of ``url``, parse it as JSON and return the object.
-
-    Parameters
-    ----------
-    url : str
-
-    Returns
-    -------
-    dict
-    """
+def getJsonparsedData(url):
     response = urlopen(url)
     data = response.read().decode("utf-8")
     return json.loads(data)
 
 
-url = ("https://financialmodelingprep.com/api/v3/quote-short/AAPL?apikey=7cdd254d9988ed187429f1cf3d76a1f4")
-print(get_jsonparsed_data(url))
+def getRealTimeStock():
+    url_P1 = ("https://financialmodelingprep.com/api/v3/quote-short/")
+    url_P2 = ("?apikey=%s" % (config.FMP_API))
+    stockList = ['GME', 'AMC']
+    dataList = []
+    global count
+    for i in range(len(stockList)):
+        while count != len(stockList):
+            url = url_P1+stockList[count]+url_P2
+            realTimeData = (getJsonparsedData(url))
+            dataList.append(realTimeData)
+            count += 1
+    return dataList
+
+
+def main():
+    # Test for how long each function takes to run
+    with cProfile.Profile() as pr:
+        getRealTimeStock()
+    stats = pstats.Stats(pr)
+    stats.sort_stats(pstats.SortKey.TIME)
+    # stats.print_stats()
+    stats.dump_stats(filename='profiling.prof')
+    # in bash: snakeviz ./profiling.prof
+
+
+# getRealTimeStock()
+if __name__ == '__main__':
+    main()

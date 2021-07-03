@@ -7,8 +7,7 @@ except ImportError:
     from urllib2 import urlopen
 
 import json
-import os
-import sys
+
 counter = 0
 
 
@@ -32,7 +31,7 @@ def getJsonparsedData(url):
 
 def getMostGainerStock():   # Get data from FMP api
     url = ('https://financialmodelingprep.com/api/v3/stock/gainers?apikey=%s' %
-           (config.FMP_API_STOCK_LIST))
+           (config.FMP_API))
     parsedStockData = (getJsonparsedData(url))
     return parsedStockData
 
@@ -51,7 +50,7 @@ def getGainerTicker():  # Process data select only ticker for graph
 
 def historicStockData():
     url_P1 = ("https://financialmodelingprep.com/api/v3/historical-price-full/")
-    url_P2 = ("?apikey=%s" % (config.FMP_API_HISTORIC_DATA))
+    url_P2 = ("?apikey=%s" % (config.FMP_API))
     topFiveTickerList = ['ENTX', 'BEST']
     dateList = []
     global counter

@@ -21,7 +21,7 @@ async def change_status():
 
 
 @client.command()
-async def stock(context):
+async def topstock(context):
     channel = context.message.channel
     embeddedMessage = discord.Embed(
         title='Top 5 Gainer Stocks Today: \n',
@@ -36,12 +36,23 @@ async def clear(message, amount=1):  # Clear messages amount default 1
     await message.channel.purge(limit=amount)
 
 
-@client.command()
-async def topticker(context):
+@client.command()   # Reminder Make pretty output
+async def historic(context):
     channel = context.message.channel
     embeddedMessage = discord.Embed(
-        title='Top 5 Gainer Stocks Ticker: \n',
-        description=stockData.historicStockData(),
+        title='Top 5 Gainer Stocks Historic Data: \n',
+        description=stockData.getHistoricStockData(),
+        colour=discord.Colour.green()
+    )
+    await context.send(embed=embeddedMessage)
+
+
+@client.command()   # Reminder Make pretty output
+async def stockprice(context):
+    channel = context.message.channel
+    embeddedMessage = discord.Embed(
+        title='Top 5 Stocks Real Time Price: \n',
+        description=stockData.getRealTimeStock(),
         colour=discord.Colour.green()
     )
     await context.send(embed=embeddedMessage)
@@ -53,7 +64,7 @@ async def stockgraph(context):
     embeddedMessage = discord.Embed(
         title='Title',  # Ticker
         description='Description here',  # Price and % change
-        colour=discord.Colour.green()
+        colour=discord.Colour.red()
     )
     embeddedMessage.set_image(
         url='http://theconcordian.com/wp-content/uploads/2021/03/dogecoin-taylor.png')
