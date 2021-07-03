@@ -9,6 +9,9 @@ except ImportError:
 
 import json
 
+amountOfStockOutput = 5
+count = 0
+
 
 class getStockList:
 
@@ -39,34 +42,38 @@ class getStockList:
     def printGainerStock(self):
         parsedStockData = getStockList.getMostGainerStock()
         mostGainerData = parsedStockData['mostGainerStock']
-        counter = 0
         topFiveList = []
+        global count
         for i in mostGainerData:
-            while counter != 5:  # Limit to only top 5
-                topFiveList.append(str(counter+1) + '. ' + mostGainerData[counter]['ticker'] + ' $' + mostGainerData[counter]['price'] + ' ' +
-                                   mostGainerData[counter]['changesPercentage'])    # Store ticker, price, and %change of stock
-                counter += 1
+            while count != amountOfStockOutput:  # Limit amount of stock outputs
+                topFiveList.append(str(count+1) + '. ' + mostGainerData[count]['ticker'] + ' $' + mostGainerData[count]['price'] + ' ' +
+                                   mostGainerData[count]['changesPercentage'])    # Store ticker, price, and %change of stock
+                count += 1
         return topFiveList
 
     def getGainerTicker():  # Process data select only ticker for graph
         parsedStockData = getStockList.getMostGainerStock()
         mostGainerData = parsedStockData['mostGainerStock']
-        counter = 0
         tickerList = []
+        global count
         for i in mostGainerData:
-            while counter != 5:  # Limit to only top 5
-                tickerList.append(mostGainerData[counter]['ticker'])
-                counter += 1
+            while count != amountOfStockOutput:
+                tickerList.append(mostGainerData[count]['ticker'])
+                count += 1
         return tickerList
 
-    # Get historic data of each ticker from top 5 gainer stocks
+    # Get historic data of each ticker from top gainer stocks
     def historicStockData(self):
         url_P1 = ("https://financialmodelingprep.com/api/v3/historical-price-full/")
         url_P2 = ("?apikey=%s" % (config.FMP_API_HISTORIC_DATA))
         tickerList = getStockList.getGainerTicker()
         topFiveTickerList = []
+        count = 0
         for i in range(len(tickerList)):
-            url = url_P1+tickerList[i]+url_P2
-            parsedHistoricalData = (getStockList.getJsonparsedData(url))
-            topFiveTickerList.append(parsedHistoricalData['symbol'])
-        return tickerList
+            while count != len(tickerList):
+                url = url_P1+tickerList[count]+url_P2
+                parsedHistoricalData = (getStockList.getJsonparsedData(url))
+                topFiveTickerList.append(parsedHistoricalData['symbol'] + " " + parsedHistoricalData['historical'][0]['date'] + " Close price: " + str(
+                    parsedHistoricalData['historical'][0]['close']))    # *Reminder: Store in hash table linked list instead
+                count += 1
+        return topFiveTickerList
